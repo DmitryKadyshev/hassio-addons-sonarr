@@ -12,9 +12,9 @@ ARG BUILD_VERSION=${SONARR_VERSION}
 ENV XDG_CONFIG_HOME="/config/xdg"
 # hadolint ignore=DL3003,DL3042
 RUN \
-  apk add --no-cache \
+apk add --no-cache \
     icu-libs=76.1-r1 \
-    sqlite-libs=3.51.2-r0 \
+    sqlite-libs=3.53.4-r0 \
     xmlstarlet=1.6.1-r2 \
   \
   && if [ "${BUILD_ARCH}" = "aarch64" ]; then SONARR_ARCH="arm64"; \
