@@ -21,7 +21,7 @@ apk add --no-cache \
   elif [ "${BUILD_ARCH}" = "amd64" ]; then SONARR_ARCH="x64"; fi \
   \
   && curl -J -L -o /tmp/sonarr.tar.gz \
-      "https://github.com/Sonarr/Sonarr/releases/download/v${SONARR_VERSION}/Sonarr.develop.${SONARR_VERSION}.linux-musl-${SONARR_ARCH}.tar.gz" \
+      "https://github.com/Sonarr/Sonarr/releases/download/v${SONARR_VERSION}/Sonarr.main.${SONARR_VERSION}.linux-musl-${SONARR_ARCH}.tar.gz" \
   && mkdir -p /opt/bin \
   && tar zxvf \
       /tmp/sonarr.tar.gz \
