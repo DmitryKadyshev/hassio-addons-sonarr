@@ -13,17 +13,7 @@ on:
 permissions: {}
 
 jobs:
-  ci:
-    permissions:
-      actions: read
-      contents: write
-      pull-requests: read
-      packages: read
-      security-events: write
-    uses: hassio-addons/workflows/.github/workflows/app-ci.yaml@3846ae0fd09acec8ac1ac308ceacd052b9d01bec # v2.0.6
-
   deploy:
-    needs: ci
     permissions:
       contents: read
       packages: write
