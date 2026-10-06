@@ -142,15 +142,15 @@ jobs:
           outputs: type=image,push=true,compression=zstd,compression-level=9,force-compression=true,oci-mediatypes=true
           # yamllint disable rule:line-length
           tags: |
-            ghcr.io/dmitrykadyshev/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.environment }}
-            ghcr.io/dmitrykadyshev/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}
+            ghcr.io/dmitrykadyshev/addon-sonarr/${{ matrix.architecture }}:${{ needs.information.outputs.environment }}
+            ghcr.io/dmitrykadyshev/addon-sonarr/${{ matrix.architecture }}:${{ needs.information.outputs.version }}
           # yamllint enable rule:line-length
           # zizmor: ignore[template-injection] - path input to action, not shell-executed
           context: ${{ needs.information.outputs.target }}
           file: ${{ needs.information.outputs.target }}/Dockerfile
           cache-from: |
             type=gha,scope=${{ matrix.architecture }}
-            type=registry,ref=ghcr.io/dmitrykadyshev/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:edge
+            type=registry,ref=ghcr.io/dmitrykadyshev/addon-sonarr/${{ matrix.architecture }}:edge
           cache-to: type=gha,mode=max,scope=${{ matrix.architecture }}
           platforms: ${{ steps.flags.outputs.platform }}
           build-args: |
@@ -180,8 +180,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: 🚀 Create and push manifest
         env:
-          REPO_OWNER: dmitrykadyshev
-          SLUG: ${{ needs.information.outputs.slug }}
+          IMAGE: ghcr.io/dmitrykadyshev/addon-sonarr
           ENVIRONMENT: ${{ needs.information.outputs.environment }}
           VERSION: ${{ needs.information.outputs.version }}
           ARCHITECTURES: ${{ needs.information.outputs.architectures }}
@@ -189,14 +188,14 @@ jobs:
         run: |
           sources=()
           for arch in $(echo "${ARCHITECTURES}" | jq -r '.[]'); do
-            sources+=("ghcr.io/${REPO_OWNER}/${SLUG}/${arch}:${VERSION}")
+            sources+=("${IMAGE}/${arch}:${VERSION}")
           done
 
           docker buildx imagetools create \
-            --tag "ghcr.io/${REPO_OWNER}/${SLUG}:${ENVIRONMENT}" \
+            --tag "${IMAGE}:${ENVIRONMENT}" \
             "${sources[@]}"
 
           docker buildx imagetools create \
-            --tag "ghcr.io/${REPO_OWNER}/${SLUG}:${VERSION}" \
+            --tag "${IMAGE}:${VERSION}" \
             "${sources[@]}"
 
